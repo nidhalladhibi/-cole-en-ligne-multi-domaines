@@ -1,0 +1,40 @@
+{% extends "accounts/base.html" %}
+{% load static %}  <!-- ضروري للـ static files -->
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Modifier votre profil</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label>Nom d'utilisateur:</label>
+            {{ u_form.username }}
+        </div>
+        <div class="mb-3">
+            <label>Email:</label>
+            {{ u_form.email }}
+        </div>
+        <div class="mb-3">
+            <label>Image de profil:</label>
+            {{ p_form.image }}
+        </div>
+        <button type="submit" class="btn btn-success">Mettre à jour</button>
+    </form>
+
+    <hr>
+    <h5>Image actuelle:</h5>
+    {% if request.user.profile.image %}
+        <img src="{{ request.user.profile.image.url }}" class="img-thumbnail" width="150">
+    {% else %}
+        <!-- صورة افتراضية إذا لم يقم المستخدم برفع صورة -->
+        <img src="{% static 'accounts/default_profile.png' %}" class="img-thumbnail" width="150">
+    {% endif %}
+</div>
+{% endblock %}
